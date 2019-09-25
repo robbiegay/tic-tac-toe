@@ -2,8 +2,8 @@
 
 let gameBoard = document.querySelector('.gameBoard');
 let rstBtn = document.querySelector('#rstBtn');
-let whoseTurn = document.querySelector('#whoseTurn');
-let winner = document.querySelector('#winner');
+// let whoseTurn = document.querySelector('#whoseTurn');
+let gameText = document.querySelector('#gameText');
 
 // Declare empty game array and turns
 let turn = 'X';
@@ -22,7 +22,7 @@ function createBoard(gridSize) {
     tileAr = [];
     turn = 'X';
     gameWon = false;
-    winner.innerHTML = `It's <span id="whoseTurn">X</span>'s turn`;
+    gameText.innerHTML = `It's X's turn`;
     for (let i = 0; i < gridSize; i++) {
         // Builds the board
         let div = document.createElement('div');
@@ -51,7 +51,7 @@ function clickedOn(e) {
             tileAr[id].value = (turn === 'X' ? 1 : 2);
             this.innerHTML = turn;
             turn === 'X' ? turn = 'O' : turn = 'X';
-            whoseTurn.innerHTML = turn;
+            gameText.innerHTML = `It's ${turn}'s turn`;
             // console.log(tileAr);
             isWinner();
         }
@@ -84,9 +84,9 @@ function isWinner() {
         // turns the array into a comma separated string, and tests if equal to all X's or all O's
         if (winAr[i].join() === '1,1,1' || winAr[i].join() === '2,2,2') {
             gameWon = true;
-            winner.innerHTML = `${winAr[i].join() === '1,1,1' ? 'X' : 'O'} won the game!!`;
+            gameText.innerHTML = `${winAr[i].join() === '1,1,1' ? 'X' : 'O'} won the game!!`;
         } else if (tieAr.join() === 'true,true,true,true,true,true,true,true,true' && gameWon === false) {
-            winner.innerHTML = 'TIE!!';
+            gameText.innerHTML = 'TIE!!';
         }
     }
 }
@@ -96,7 +96,7 @@ function rstGame() {
     gameBoard.innerHTML = '';
     // Builds the game board
     createBoard(9);
-    whoseTurn.innerHTML = turn;
+    // whoseTurn.innerHTML = turn;
 }
 
 rstBtn.addEventListener('click', rstGame);

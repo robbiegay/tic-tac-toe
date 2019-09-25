@@ -4,11 +4,19 @@ let gameBoard = document.querySelector('.gameBoard');
 let rstBtn = document.querySelector('#rstBtn');
 // let whoseTurn = document.querySelector('#whoseTurn');
 let gameText = document.querySelector('#gameText');
+// Scores
+let xWins = document.querySelector('#xWins');
+let yWins = document.querySelector('#yWins');
+let ties = document.querySelector('#ties');
+// Win table
+let winTable = document.querySelector('.table');
 
 // Declare empty game array and turns
 let turn = 'X';
 let tileArr = [];
 let gameWon = false;
+// [x wins, o wins, ties];
+let gameTally = [0, 0, 0];
 
 class sqObj {
     constructor(value, clicked) {
@@ -19,8 +27,8 @@ class sqObj {
 
 function createBoard(gridSize) {
     // Resets game on build
-    tileAr = [];
     turn = 'X';
+    tileAr = [];
     gameWon = false;
     gameText.innerHTML = `It's X's turn`;
     for (let i = 0; i < gridSize; i++) {
@@ -85,9 +93,22 @@ function isWinner() {
         if (winAr[i].join() === '1,1,1' || winAr[i].join() === '2,2,2') {
             gameWon = true;
             gameText.innerHTML = `${winAr[i].join() === '1,1,1' ? 'X' : 'O'} won the game!!`;
-        } else if (tieAr.join() === 'true,true,true,true,true,true,true,true,true' && gameWon === false) {
-            gameText.innerHTML = 'TIE!!';
+            // Adjust game tally
+            turn === 'O' ? gameTally[0]++ : gameTally[1]++;
+            xWins.innerHTML = gameTally[0];
+            yWins.innerHTML = gameTally[1];
+            ties.innerHTML = gameTally[2];
+            winTable.style.visibility = 'visible';
         }
+    }
+    // Tests for ties
+    if (tieAr.join() === 'true,true,true,true,true,true,true,true,true' && gameWon === false) {
+        gameText.innerHTML = 'TIE!!';
+        gameTally[2]++;
+        xWins.innerHTML = gameTally[0];
+        yWins.innerHTML = gameTally[1];
+        ties.innerHTML = gameTally[2];
+        winTable.style.visibility = 'visible';
     }
 }
 

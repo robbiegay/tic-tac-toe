@@ -8,7 +8,7 @@ let winner = document.querySelector('#winner');
 // Declare empty game array and turns
 let turn = 'X';
 let tileArr = [];
-let gameWon = false;
+let gameOver = false;
 
 class sqObj {
     constructor(value, clicked) {
@@ -21,7 +21,7 @@ function createBoard(gridSize) {
     // Resets game on build
     tileAr = [];
     turn = 'X';
-    gameWon = false;
+    gameOver = false;
     winner.innerHTML = `It's <span id="whoseTurn">X</span>'s turn`;
     for (let i = 0; i < gridSize; i++) {
         // Builds the board
@@ -44,7 +44,7 @@ function createBoard(gridSize) {
 createBoard(9);
 
 function clickedOn(e) {
-    if (!gameWon) {
+    if (!gameOver) {
         let id = e.target.id.split('-')[1];
         if (!tileAr[id].clicked) {
             tileAr[id].clicked = true;
@@ -74,12 +74,19 @@ function isWinner() {
         [tileAr[0].value, tileAr[4].value, tileAr[8].value],
         [tileAr[2].value, tileAr[4].value, tileAr[6].value]
     ];
+    let tieAr = [
+        tileAr[0].clicked, tileAr[1].clicked, tileAr[2].clicked,
+        tileAr[3].clicked, tileAr[4].clicked, tileAr[5].clicked,
+        tileAr[6].clicked, tileAr[7].clicked, tileAr[8].clicked,
+    ]
     // Loops through the 8 win options
     for (let i = 0; i < 8; i++) {
         // turns the array into a comma separated string, and tests if equal to all X's or all O's
         if (winAr[i].join() === '1,1,1' || winAr[i].join() === '2,2,2') {
-            gameWon = true;
+            gameOver = true;
             winner.innerHTML = `${winAr[i].join() === '1,1,1' ? 'X' : 'O'} won the game!!`;
+        } else if (tieAr.join() === 'true,true,true,true,true,true,true,true,true') {
+            winner.innerHTML = 'TIE!!!';
         }
     }
 }

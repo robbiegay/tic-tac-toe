@@ -2,13 +2,13 @@
 
 let gameBoard = document.querySelector('.gameBoard');
 let rstBtn = document.querySelector('#rstBtn');
-let whoseTurn = document.querySelector('#whoseTurn');
-let winner = document.querySelector('#winner');
+// let whoseTurn = document.querySelector('#whoseTurn');
+let gameText = document.querySelector('#gameText');
 
 // Declare empty game array and turns
 let turn = 'X';
 let tileArr = [];
-let gameOver = false;
+let gameWon = false;
 
 class sqObj {
     constructor(value, clicked) {
@@ -21,8 +21,8 @@ function createBoard(gridSize) {
     // Resets game on build
     tileAr = [];
     turn = 'X';
-    gameOver = false;
-    winner.innerHTML = `It's <span id="whoseTurn">X</span>'s turn`;
+    gameWon = false;
+    gameText.innerHTML = `It's X's turn`;
     for (let i = 0; i < gridSize; i++) {
         // Builds the board
         let div = document.createElement('div');
@@ -34,7 +34,7 @@ function createBoard(gridSize) {
         // Creates an object for each tile
         let tile = new sqObj(0, false);
         tileAr.push(tile)
-        // Adds click listner and adds the tile to gameboard
+        // Adds click listener and adds the tile to game board
         div.addEventListener('click', clickedOn);
         gameBoard.appendChild(div);
     }
@@ -44,15 +44,15 @@ function createBoard(gridSize) {
 createBoard(9);
 
 function clickedOn(e) {
-    if (!gameOver) {
+    if (!gameWon) {
         let id = e.target.id.split('-')[1];
         if (!tileAr[id].clicked) {
             tileAr[id].clicked = true;
             tileAr[id].value = (turn === 'X' ? 1 : 2);
             this.innerHTML = turn;
             turn === 'X' ? turn = 'O' : turn = 'X';
-            whoseTurn.innerHTML = turn;
-            console.log(tileAr);
+            gameText.innerHTML = `It's ${turn}'s turn`;
+            // console.log(tileAr);
             isWinner();
         }
     }
@@ -83,10 +83,10 @@ function isWinner() {
     for (let i = 0; i < 8; i++) {
         // turns the array into a comma separated string, and tests if equal to all X's or all O's
         if (winAr[i].join() === '1,1,1' || winAr[i].join() === '2,2,2') {
-            gameOver = true;
-            winner.innerHTML = `${winAr[i].join() === '1,1,1' ? 'X' : 'O'} won the game!!`;
-        } else if (tieAr.join() === 'true,true,true,true,true,true,true,true,true') {
-            winner.innerHTML = 'TIE!!!';
+            gameWon = true;
+            gameText.innerHTML = `${winAr[i].join() === '1,1,1' ? 'X' : 'O'} won the game!!`;
+        } else if (tieAr.join() === 'true,true,true,true,true,true,true,true,true' && gameWon === false) {
+            gameText.innerHTML = 'TIE!!';
         }
     }
 }
@@ -96,79 +96,7 @@ function rstGame() {
     gameBoard.innerHTML = '';
     // Builds the game board
     createBoard(9);
-    whoseTurn.innerHTML = turn;
+    // whoseTurn.innerHTML = turn;
 }
 
 rstBtn.addEventListener('click', rstGame);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// class sqObj {
-//     constructor(value, clicked, innerHTML) {
-//         this.value = value;
-//         this.clicked = clicked;
-//         this.innerHTML = 'null';
-//     }
-//     clickOn() {
-//         if (clicked === false) {
-//             this.clicked = true;
-//             if (turn === 0) {
-//                 this.innerHTML = 'X';
-//                 this.value = 1; // How to add this value to score array
-//                 turn = 1;
-//             } else {
-//                 this.innerHTML = 'O';
-//                 this.value = 2;
-//                 turn = 0;
-//             }
-//             winner();
-//         }
-//     }
-//     // this.addEventListener('click', clickOn);
-// }
-
-
-
-// rstBtn.addEventListener('click', start);
-
-// function start() {
-//     // Resets the game array to 0's
-//     gameAr = [
-//         [0, 0, 0],
-//         [0, 0, 0],
-//         [0, 0, 0]
-//     ];
-//     // Builds the game board
-//     function build() {
-//         for (let i = 0; i < 3; i++) {
-//             for (let j = 0; j < 3; j++) {
-//                 let sqObj1 = new sqObj(0, false);
-//                 let tile = document.createElement('div');
-//                 tile.addAttribute(id, 'i, j');
-//                 tile.innerHTML = sqObj.innerHTML;
-//                 gameAr.push[i, j] = sqObj.value[x or o];
-//             }
-//         }
-//     }
-//     build();
-// }
-
-
-// function winner() {
-//     // Insert winner logic here
-// }
-
-// // Start runs once on page load to build the page
-// start();
